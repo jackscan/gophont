@@ -102,10 +102,11 @@ func main() {
 	if packstr {
 		var b bytes.Buffer
 
-		w := lzw.NewWriter(base64.NewEncoder(base64.StdEncoding, &b), lzw.MSB, 8)
-		defer w.Close()
-
+		e := base64.NewEncoder(base64.StdEncoding, &b)
+		w := lzw.NewWriter(e, lzw.MSB, 8)
 		w.Write(dst.Pix)
+		w.Close()
+		e.Close()
 
 		nbytes := len(b.Bytes())
 		linelen := 72
